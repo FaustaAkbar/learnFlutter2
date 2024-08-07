@@ -1,77 +1,97 @@
-import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
-import 'model/models.dart';
-import 'dart:math';
 
 void main() {
-  runApp(Myapp());
+  runApp(MyApp());
 }
 
-class Myapp extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Homepage(),
+      home: MyHomepage(),
+      theme: ThemeData(
+          appBarTheme: AppBarTheme(
+        backgroundColor: Colors.blue,
+        centerTitle: true,
+      )),
     );
   }
 }
 
-class Homepage extends StatelessWidget {
-  final Faker faker = Faker();
+class MyHomepage extends StatefulWidget {
+  @override
+  State<MyHomepage> createState() => _MyHomepageState();
+}
+
+class _MyHomepageState extends State<MyHomepage> {
+  DateTime myTime = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
-    List<myModel> dummyData = List.generate(20, (index) {
-      return myModel(
-          url: "https://picsum.photos/id/$index/300",
-          nama: faker.food.dish(),
-          harga: Random().nextInt(1000),
-          deskripsi: faker.lorem.sentence());
-    });
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: Text(
-          "Product",
-          style: TextStyle(fontSize: 40),
-        ),
+        title: Text("Haloo"),
       ),
-      body: GridView.builder(
-          padding: EdgeInsets.all(10),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
-          itemBuilder: (expect, index) {
-            return GridTile(
-              child: Image.network(dummyData[index].url),
-              footer: Container(
-                height: 80,
-                alignment: Alignment.center,
-                color: Colors.green.shade300,
+      drawer: Drawer(
+        child: Column(
+          children: [
+            Container(
+                height: MediaQuery.of(context).size.height * 0.2,
+                width: double.infinity,
+                color: Colors.red,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    CircleAvatar(
+                      radius: 30,
+                      child: Icon(Icons.person),
+                    ),
                     Text(
-                      dummyData[index].nama,
+                      "Halo Fausta Akbar",
                       style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "Harga: ${dummyData[index].harga}",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                    Text(
-                      textAlign: TextAlign.center,
-                      dummyData[index].deskripsi,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    )
                   ],
-                ),
+                )),
+            ListTile(
+              onTap: () {
+                Navigator.of(context).pushReplacementNamed("");
+              },
+              leading: Icon(Icons.home),
+              title: Text(
+                "My Homepage",
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
-            );
-          }),
+            )
+          ],
+        ),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(myTime.toString()),
+            ElevatedButton(
+                onPressed: () {
+                  showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1998),
+                    lastDate: DateTime(2029),
+                  ).then((onValue) {
+                    if (onValue != null) {
+                      setState(() {
+                        myTime = onValue;
+                      });
+                    }
+                  });
+                },
+                child: Text("Date"))
+          ],
+        ),
+      ),
     );
   }
 }
