@@ -1,77 +1,79 @@
-import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
-import 'model/models.dart';
-import 'dart:math';
 
 void main() {
-  runApp(Myapp());
+  runApp(MyAppp());
 }
 
-class Myapp extends StatelessWidget {
+class MyAppp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Homepage(),
+      theme: ThemeData(
+          appBarTheme: AppBarTheme(
+        backgroundColor: Colors.blue,
+        centerTitle: true,
+      )),
+      home: MyHomepage(),
     );
   }
 }
 
-class Homepage extends StatelessWidget {
-  final Faker faker = Faker();
-
+class MyHomepage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List<myModel> dummyData = List.generate(20, (index) {
-      return myModel(
-          url: "https://picsum.photos/id/$index/300",
-          nama: faker.food.dish(),
-          harga: Random().nextInt(1000),
-          deskripsi: faker.lorem.sentence());
-    });
     // TODO: implement build
+    final wideApp = MediaQuery.of(context).size.width;
+    final bodyHeight = MediaQuery.of(context).size.height;
+    final paddingTop = MediaQuery.of(context).padding.top;
+    final myAppbar = AppBar(
+      title: Text("Layout Builder"),
+    );
+    final height = bodyHeight - paddingTop - myAppbar.preferredSize.height;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: Text(
-          "Product",
-          style: TextStyle(fontSize: 40),
+      appBar: myAppbar,
+      body: Container(
+        color: Colors.greenAccent,
+        height: height * 0.3,
+        width: wideApp,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            MyContainer(
+              // height: height,//tidak perlu lagi height agar container bisa mengikuti ukuran dari container hijau kita gunakan layout builder
+              width: wideApp,
+            ),
+            MyContainer(
+              // height: height,//tidak perlu lagi height agar container bisa mengikuti ukuran dari container hijau kita gunakan layout builder
+              width: wideApp,
+            ),
+            MyContainer(
+              // height: height,//tidak perlu lagi height agar container bisa mengikuti ukuran dari container hijau kita gunakan layout builder
+              width: wideApp,
+            ),
+          ],
         ),
       ),
-      body: GridView.builder(
-          padding: EdgeInsets.all(10),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
-          itemBuilder: (expect, index) {
-            return GridTile(
-              child: Image.network(dummyData[index].url),
-              footer: Container(
-                height: 80,
-                alignment: Alignment.center,
-                color: Colors.green.shade300,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      dummyData[index].nama,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "Harga: ${dummyData[index].harga}",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                    Text(
-                      textAlign: TextAlign.center,
-                      dummyData[index].deskripsi,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }),
+    );
+  }
+}
+
+class MyContainer extends StatelessWidget {
+  final width;
+  final a = false;
+  MyContainer({required this.width});
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Container(
+          width: width * 0.3,
+          height: constraints.maxHeight * 0.4,
+          color: Colors.amber,
+          child: a ? Text("Benar") : Text("Salah"),
+        );
+      },
     );
   }
 }
