@@ -1,20 +1,21 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:io';
 
 void main() {
-  runApp(MyAppp());
+  runApp(MyApp());
 }
 
-class MyAppp extends StatelessWidget {
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          appBarTheme: AppBarTheme(
-        backgroundColor: Colors.blue,
-        centerTitle: true,
-      )),
+          appBarTheme:
+              AppBarTheme(backgroundColor: Colors.blue, centerTitle: true)),
       home: MyHomepage(),
     );
   }
@@ -23,57 +24,60 @@ class MyAppp extends StatelessWidget {
 class MyHomepage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
     // TODO: implement build
-    final wideApp = MediaQuery.of(context).size.width;
-    final bodyHeight = MediaQuery.of(context).size.height;
-    final paddingTop = MediaQuery.of(context).padding.top;
-    final myAppbar = AppBar(
-      title: Text("Layout Builder"),
-    );
-    final height = bodyHeight - paddingTop - myAppbar.preferredSize.height;
     return Scaffold(
-      appBar: myAppbar,
-      body: Container(
-        color: Colors.greenAccent,
-        height: height * 0.3,
-        width: wideApp,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            MyContainer(
-              // height: height,//tidak perlu lagi height agar container bisa mengikuti ukuran dari container hijau kita gunakan layout builder
-              width: wideApp,
-            ),
-            MyContainer(
-              // height: height,//tidak perlu lagi height agar container bisa mengikuti ukuran dari container hijau kita gunakan layout builder
-              width: wideApp,
-            ),
-            MyContainer(
-              // height: height,//tidak perlu lagi height agar container bisa mengikuti ukuran dari container hijau kita gunakan layout builder
-              width: wideApp,
-            ),
-          ],
+      appBar: AppBar(
+        title: Text("Cupertino"),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Platform.isAndroid
+                ? showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        //Apa bila bukan IOS (Iphone)
+                        title: Text("Show DIalog"),
+                        content: Text("Are you sure to continue?"),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                showDatePicker(
+                                    onDatePickerModeChange: (value) {
+                                      print(value);
+                                    },
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(1998),
+                                    lastDate: DateTime(2026));
+                              },
+                              child: Text("Yes")),
+                          TextButton(onPressed: () {}, child: Text("No"))
+                        ],
+                      );
+                    })
+                : showCupertinoModalPopup(
+                    context: context,
+                    builder: (context) {
+                      return Container(
+                        height: height * 0.5,
+                        child: CupertinoDatePicker(
+                          mode: CupertinoDatePickerMode.monthYear,
+                          onDateTimeChanged: (DateTime) {
+                            print(DateTime);
+                          },
+                          initialDateTime: DateTime.now(),
+                          minimumDate: DateTime(1993),
+                          maximumDate: DateTime(2024),
+                        ),
+                      );
+                    });
+          },
+          child: Text("Dialog"),
         ),
       ),
-    );
-  }
-}
-
-class MyContainer extends StatelessWidget {
-  final width;
-  final a = false;
-  MyContainer({required this.width});
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Container(
-          width: width * 0.3,
-          height: constraints.maxHeight * 0.4,
-          color: Colors.amber,
-          child: a ? Text("Benar") : Text("Salah"),
-        );
-      },
     );
   }
 }
