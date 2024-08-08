@@ -76,10 +76,32 @@ class _MyHomepageState extends State<MyHomepage> {
             ElevatedButton(
                 onPressed: () {
                   showDatePicker(
+                    initialDatePickerMode: DatePickerMode
+                        .day, //Untuk menampilkan tahun terlebih dahulu
                     context: context,
                     initialDate: DateTime.now(),
                     firstDate: DateTime(1998),
                     lastDate: DateTime(2029),
+                    selectableDayPredicate: (day) {
+                      if (day.isAfter(
+                              DateTime.now().subtract(Duration(days: 5))) &&
+                          day.isBefore(DateTime.now().add(Duration(days: 2)))) {
+                        return true;
+                      }
+                      return false;
+                    },
+                    helpText: "helpText",
+                    cancelText: "cancelText",
+                    confirmText: "confirmText",
+                    fieldHintText: "fieldHintText",
+                    fieldLabelText: "fieldLabelText",
+                    builder: (context, child) {
+                      return Theme(
+                        data: ThemeData.dark(),
+                        child: child ?? Container(),
+                      );
+                    },
+                    // initialEntryMode: DatePickerEntryMode.input,//Bisa di ganti tampilannya
                   ).then((onValue) {
                     if (onValue != null) {
                       setState(() {
