@@ -20,10 +20,13 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'MyShop',
         theme: ThemeData(
-          primarySwatch: Colors.indigo,
-          primaryColor: Colors.amber,
-          fontFamily: 'Lato',
-        ),
+            primarySwatch: Colors.indigo,
+            primaryColor: Colors.amber,
+            fontFamily: 'Lato',
+            appBarTheme: AppBarTheme(
+              backgroundColor: Colors.blue,
+              centerTitle: true,
+            )),
         home: ProductsOverviewScreen(),
         routes: {
           ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
