@@ -9,20 +9,26 @@ class ProductDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // Safely access ModalRoute and arguments
     final routeArgs = ModalRoute.of(context)?.settings.arguments;
+    final appbarr = AppBar(
+      title: Text('Product Details'),
+    );
     final product = Provider.of<Products>(context)
         .MyProduct
         .firstWhere((prduct_id) => prduct_id.id == routeArgs);
-    final height = MediaQuery.of(context).size.height;
+    final height = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        appbarr.preferredSize.height;
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Product Details'),
-        ),
+        appBar: appbarr,
         body: Column(
           children: [
             Container(
               width: double.infinity,
-              height: ,
-              child: Image.network("${product.imageUrl}",fit: BoxFit.fill,),
+              height: height * 0.3,
+              child: Image.network(
+                "${product.imageUrl}",
+                fit: BoxFit.fitHeight,
+              ),
             ),
             SizedBox(
               height: 30,
