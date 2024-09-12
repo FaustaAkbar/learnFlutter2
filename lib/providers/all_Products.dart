@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:application2/models/product.dart';
+import 'package:application2/providers/product.dart';
 import 'dart:math';
 
 class Products with ChangeNotifier {
@@ -16,6 +16,6 @@ class Products with ChangeNotifier {
     },
   );
   List<Product> get MyProduct {
-    return [..._myProduct];
+    return _myProduct;
   }
 }
