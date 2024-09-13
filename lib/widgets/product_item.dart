@@ -1,3 +1,4 @@
+import 'package:application2/providers/chart.dart';
 import 'package:application2/providers/product.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +8,8 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final products = Provider.of<Product>(context, listen: false);
-    print("render");
+    final chart = Provider.of<Chart>(context, listen: false);
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
@@ -50,7 +52,13 @@ class ProductItem extends StatelessWidget {
             icon: Icon(
               Icons.shopping_cart,
             ),
-            onPressed: () {},
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Berhasil ditambahkan"),
+                duration: Duration(milliseconds: 500),
+              ));
+              chart.addChart(products.id, products.title, products.price);
+            },
             color: Theme.of(context).primaryColor,
           ),
         ),
