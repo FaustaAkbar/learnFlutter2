@@ -14,7 +14,7 @@ Each branch in this repository represents a specific topic or concept that has b
 
 1. Clone this repository to your local machine:
 ```bash
-git clone https://github.com/FaustaAkbar/learnFLutter1.git
+git clone https://github.com/FaustaAkbar/learnFlutter2.git
 ```
 2. Switch to the desired branch:
 ```bash
